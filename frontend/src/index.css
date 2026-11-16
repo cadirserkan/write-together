@@ -1,0 +1,776 @@
+/*
+  The look in one sentence: the bookshelf hangs on a dark green wall,
+  and opening a book puts a sheet of paper on top of it.
+*/
+
+:root {
+  --wall: #213b3a;
+  --wall-deep: #182c2b;
+  --on-wall: #eef0e6;
+  --on-wall-soft: #a9bcb4;
+
+  --board: #c9a06a;
+  --board-edge: #94703f;
+
+  --paper: #fbfaf4;
+  --ink: #1f2428;
+  --ink-soft: #5d6662;
+  --rule: #dedccf;
+
+  --ribbon: #e0452f;
+  --action: #c2371f;
+  --action-hover: #a82d18;
+  --focus: #f2c14e;
+
+  --serif: 'Literata', Georgia, 'Times New Roman', serif;
+  --sans: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --cover-w: 132px;
+  --cover-h: 196px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--wall);
+  color: var(--on-wall);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: var(--action);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--action-hover);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.button-quiet {
+  border-color: currentColor;
+  background: transparent;
+  color: inherit;
+  font-weight: 500;
+}
+
+.button-quiet:hover:not(:disabled) {
+  background: rgb(0 0 0 / 0.06);
+}
+
+.button-wide {
+  width: 100%;
+}
+
+.text-button {
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.text-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding: 1rem clamp(1rem, 4vw, 2.5rem);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.25rem;
+  font-size: 0.95rem;
+}
+
+.topbar-user {
+  font-weight: 600;
+}
+
+.topbar-note {
+  color: var(--on-wall-soft);
+}
+
+.content {
+  padding: 1.5rem clamp(1rem, 4vw, 2.5rem) 4rem;
+}
+
+.status-text {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--on-wall-soft);
+}
+
+.status-text a {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: var(--on-wall);
+}
+
+/* ---------- Bookshelf ---------- */
+
+.shelf-head {
+  max-width: 40rem;
+  margin-bottom: 0.5rem;
+}
+
+.shelf-head h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.shelf-head p {
+  margin-top: 0.4rem;
+  color: var(--on-wall-soft);
+}
+
+/*
+  Every row of the grid has the same height, so the wooden boards can be drawn
+  as one repeating background: empty space, then the board, its front edge and a shadow.
+*/
+.shelf {
+  --row-h: calc(var(--cover-h) + 62px);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--cover-w));
+  column-gap: 26px;
+  margin: 0 calc(-1 * clamp(1rem, 4vw, 2.5rem));
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+  list-style: none;
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(var(--row-h) - 26px),
+    var(--board) calc(var(--row-h) - 26px),
+    var(--board) calc(var(--row-h) - 14px),
+    var(--board-edge) calc(var(--row-h) - 14px),
+    var(--board-edge) calc(var(--row-h) - 11px),
+    rgb(0 0 0 / 0.3) calc(var(--row-h) - 11px),
+    transparent var(--row-h)
+  );
+  background-size: 100% var(--row-h);
+  background-repeat: repeat-y;
+}
+
+.shelf > li {
+  height: var(--row-h);
+  padding-top: 36px;
+}
+
+.cover-link {
+  display: block;
+  width: var(--cover-w);
+  border-radius: 3px 6px 6px 3px;
+  text-decoration: none;
+}
+
+.cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: var(--cover-w);
+  height: var(--cover-h);
+  padding: 18px 15px 15px 26px;
+  border-radius: 3px 6px 6px 3px;
+  text-align: left;
+  /* the darker strip on the left is the spine, the thin light line is where the cover folds */
+  box-shadow:
+    inset 10px 0 0 rgb(0 0 0 / 0.16),
+    inset 11px 0 0 rgb(255 255 255 / 0.16),
+    3px 0 0 rgb(0 0 0 / 0.22);
+}
+
+/* A thin line pressed into the cloth, like the frame on an old hardcover. */
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 7px 7px 7px 17px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.cover-new::before {
+  content: none;
+}
+
+.cover-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-family: var(--serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.cover-foot {
+  font-size: 0.78rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.cover-foot strong {
+  display: block;
+  font-weight: 600;
+}
+
+/* The bookmark ribbon hangs out of the bottom of a book that waits for you. */
+.ribbon {
+  position: absolute;
+  right: 20px;
+  bottom: -26px;
+  width: 13px;
+  height: 26px;
+  background: var(--ribbon);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+}
+
+.cover-new {
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 12px;
+  border: 2px dashed var(--on-wall-soft);
+  background: transparent;
+  box-shadow: none;
+  color: var(--on-wall);
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cover-new:hover {
+  border-color: var(--on-wall);
+  background: rgb(255 255 255 / 0.05);
+}
+
+.cover-new-plus {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cover-link .cover {
+    transition: transform 0.15s ease-out;
+  }
+
+  .cover-link:hover .cover,
+  .cover-link:focus-visible .cover {
+    transform: translateY(-6px);
+  }
+}
+
+/* ---------- The page of a book ---------- */
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  color: var(--on-wall-soft);
+}
+
+.back-link:hover {
+  color: var(--on-wall);
+}
+
+.page {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(1.75rem, 6vw, 3.75rem) clamp(1.25rem, 8vw, 5rem);
+  border-top: 10px solid var(--ink);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.35);
+}
+
+.page-narrow {
+  max-width: 34rem;
+  border-top-color: var(--ribbon);
+}
+
+.page h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 5.5vw, 2.7rem);
+  font-weight: 600;
+  line-height: 1.12;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.page-narrow h1 {
+  font-size: clamp(1.6rem, 5vw, 2rem);
+}
+
+.page-narrow p {
+  margin: 0.9rem 0 1.4rem;
+}
+
+.page-head {
+  margin-bottom: 2.5rem;
+}
+
+.byline {
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+}
+
+.piece {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.piece-author {
+  display: block;
+  margin-bottom: 0.1rem;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.piece-text {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.72;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* The story opens with a large first letter, like the first page of a chapter. */
+.piece:first-of-type .piece-text::first-letter {
+  float: left;
+  padding: 0.1em 0.12em 0 0;
+  font-size: 3.3em;
+  font-weight: 600;
+  line-height: 0.82;
+}
+
+/* On a wide screen the name of the writer moves into the margin, like a note next to the text. */
+@media (min-width: 60rem) {
+  .piece-author {
+    position: absolute;
+    top: 0.5rem;
+    right: 100%;
+    max-width: 3.75rem;
+    margin: 0 1rem 0 0;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.the-end {
+  margin-top: 2.5rem;
+  font-family: var(--serif);
+  font-style: italic;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+/* Three asterisks: the way a printed book marks a break before the last line. */
+.the-end::before {
+  content: '* * *';
+  display: block;
+  margin-bottom: 0.75rem;
+  font-style: normal;
+  letter-spacing: 0.2em;
+}
+
+.turn-note {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+.page-foot {
+  margin-top: 2.5rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* ---------- Writing ---------- */
+
+.write {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.write label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+
+.write textarea {
+  display: block;
+  width: 100%;
+  min-height: 10.5rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #bdb9a6;
+  border-radius: 6px;
+  background: #fff;
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.72;
+  resize: vertical;
+}
+
+.write-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.counter {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Inviting ---------- */
+
+.invite {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.invite h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.invite p {
+  margin: 0.35rem 0 1rem;
+  color: var(--ink-soft);
+}
+
+.invite-link {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.invite-link input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #bdb9a6;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.invite-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ---------- Forms ---------- */
+
+.field {
+  display: block;
+  margin-bottom: 1.1rem;
+}
+
+.field > span {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.field input {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #bdb9a6;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.field small {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.form-error {
+  margin: 1rem 0;
+  padding: 0.6rem 0.8rem;
+  border-left: 4px solid var(--action);
+  background: #fbe9e4;
+  color: #7a1f10;
+}
+
+/* ---------- Login and register ---------- */
+
+.auth-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.auth {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 24rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 8vh, 4.5rem) 1rem 3rem;
+  text-align: center;
+}
+
+/* The row of spines stands on the same wooden board as the bookshelf. */
+.spines {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 1rem;
+  border-bottom: 12px solid var(--board);
+  box-shadow: 0 3px 0 var(--board-edge);
+  margin-bottom: clamp(1.5rem, 6vh, 3.5rem);
+}
+
+.spine {
+  position: relative;
+  flex: 0 0 auto;
+  border-radius: 2px 2px 0 0;
+  box-shadow: inset -3px 0 0 rgb(0 0 0 / 0.18);
+}
+
+/* two bands near the top of the spine, where the title would be stamped */
+.spine::before {
+  content: '';
+  position: absolute;
+  top: 14%;
+  right: 4px;
+  left: 4px;
+  height: 9px;
+  border-top: 2px solid rgb(255 255 255 / 0.45);
+  border-bottom: 2px solid rgb(255 255 255 / 0.45);
+}
+
+.spine-leaning {
+  margin: 0 14px 0 2px;
+  transform: rotate(-11deg);
+  transform-origin: bottom left;
+}
+
+.auth h1 {
+  margin-top: 1rem;
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.auth-tagline {
+  margin-top: 0.4rem;
+  color: var(--on-wall-soft);
+}
+
+.card {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.35);
+}
+
+.auth-switch {
+  margin-top: 1.5rem;
+  color: var(--on-wall-soft);
+}
+
+.auth-switch a {
+  color: var(--on-wall);
+}
+
+/* ---------- New book dialog ---------- */
+
+.dialog {
+  width: min(36rem, calc(100vw - 2rem));
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.5);
+}
+
+.dialog::backdrop {
+  background: rgb(12 22 22 / 0.65);
+}
+
+.new-book {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  padding: 1.75rem;
+}
+
+.new-book-preview {
+  flex: 0 0 auto;
+  margin: 0 auto;
+}
+
+.new-book-fields {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.new-book-fields h2 {
+  margin-bottom: 1rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  border: 0;
+}
+
+.swatches legend {
+  margin-bottom: 0.45rem;
+  padding: 0;
+  font-weight: 600;
+}
+
+.swatch {
+  position: relative;
+  cursor: pointer;
+}
+
+.swatch input {
+  position: absolute;
+  opacity: 0;
+}
+
+.swatch > span:first-of-type {
+  display: block;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+}
+
+.swatch input:checked + span {
+  box-shadow:
+    0 0 0 3px var(--paper),
+    0 0 0 5px var(--ink);
+}
+
+.swatch input:focus-visible + span {
+  outline: 3px solid var(--focus);
+  outline-offset: 6px;
+}
+
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
