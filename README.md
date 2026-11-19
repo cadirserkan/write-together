@@ -57,6 +57,27 @@ cd backend
 mvn test
 ```
 
+## Put it online
+
+The app runs for free on [Render](https://render.com) (backend and frontend) with the
+database at [Neon](https://neon.tech). Both let you sign up with your GitHub account.
+
+1. **Database.** Create a project at Neon in region Frankfurt. From the connection details,
+   build a JDBC URL from the host and database name:
+   `jdbc:postgresql://<host>/<database>?sslmode=require`. Keep the user and password at hand.
+2. **Blueprint.** In Render, choose *New → Blueprint* and pick this GitHub repository.
+   Render reads `render.yaml` and asks for the empty values:
+   - `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`: from Neon
+   - `CORS_ALLOWED_ORIGINS`: the frontend URL, `https://write-together.onrender.com`
+   - `VITE_API_URL`: the backend URL, `https://write-together-api.onrender.com`
+
+   If Render gives a service a different URL (when the name is taken), use that URL instead,
+   and redeploy the frontend after changing `VITE_API_URL`, because Vite puts it in the build.
+3. Open the frontend URL.
+
+On the free plan the backend falls asleep after 15 minutes without visitors. The first
+request after that takes about a minute while it wakes up.
+
 ## How it works
 
 **Data model.** `User` and `Book` are linked through `BookMember` (with a role: owner or
