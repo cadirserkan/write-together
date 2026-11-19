@@ -3,8 +3,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, messageOf } from '../api/client';
 import type { Invitation } from '../api/types';
 import { useAuth } from '../auth/AuthContext';
+import { usePageTitle } from '../usePageTitle';
 
 export function InvitePage() {
+  usePageTitle('Uitnodiging');
   const { code = '' } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();

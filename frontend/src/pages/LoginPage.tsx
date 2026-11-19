@@ -5,8 +5,10 @@ import { useAuth } from '../auth/AuthContext';
 import { safeNextPath } from '../auth/next';
 import { Logo } from '../components/Logo';
 import { SpineRow } from '../components/SpineRow';
+import { usePageTitle } from '../usePageTitle';
 
 export function LoginPage() {
+  usePageTitle('Inloggen');
   const { user, login } = useAuth();
   const [searchParams] = useSearchParams();
   const next = safeNextPath(searchParams.get('next'));

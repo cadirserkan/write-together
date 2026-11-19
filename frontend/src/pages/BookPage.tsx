@@ -5,6 +5,7 @@ import type { BookDetail } from '../api/types';
 import { useAuth } from '../auth/AuthContext';
 import { InviteBox } from '../components/InviteBox';
 import { WriteForm } from '../components/WriteForm';
+import { usePageTitle } from '../usePageTitle';
 
 const REFRESH_INTERVAL_MS = 15_000;
 
@@ -15,6 +16,7 @@ export function BookPage() {
 
   const [book, setBook] = useState<BookDetail | null>(null);
   const [error, setError] = useState('');
+  usePageTitle(book?.title ?? 'Boek');
 
   // Ids of the pieces already on screen. Pieces that are not in here yet
   // (just written by you, or just arrived from the other writer) get a short animation.

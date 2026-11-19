@@ -4,8 +4,10 @@ import { api, messageOf } from '../api/client';
 import type { BookSummary } from '../api/types';
 import { BookCover } from '../components/BookCover';
 import { NewBookDialog } from '../components/NewBookDialog';
+import { usePageTitle } from '../usePageTitle';
 
 export function BookshelfPage() {
+  usePageTitle('Jouw boekenkast');
   const navigate = useNavigate();
   const [books, setBooks] = useState<BookSummary[] | null>(null);
   const [error, setError] = useState('');

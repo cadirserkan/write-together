@@ -1,0 +1,8 @@
+# Only the public pages are worth showing in search results.
+# Books and invitations belong to their writers and need a login anyway.
+User-agent: *
+Allow: /
+Disallow: /books/
+Disallow: /invite/
+
+Sitemap: https://write-together-serkan.onrender.com/sitemap.xml

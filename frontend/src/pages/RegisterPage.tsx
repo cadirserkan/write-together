@@ -5,8 +5,10 @@ import { useAuth } from '../auth/AuthContext';
 import { safeNextPath } from '../auth/next';
 import { Logo } from '../components/Logo';
 import { SpineRow } from '../components/SpineRow';
+import { usePageTitle } from '../usePageTitle';
 
 export function RegisterPage() {
+  usePageTitle('Account aanmaken');
   const { user, register } = useAuth();
   const [searchParams] = useSearchParams();
   const next = safeNextPath(searchParams.get('next'));
