@@ -965,3 +965,396 @@ textarea {
     transform: rotate(-11deg);
   }
 }
+
+/* ---------- Landing page ---------- */
+
+.landing {
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  overflow-x: hidden;
+}
+
+.landing-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1rem var(--gutter);
+}
+
+.landing-login {
+  font-weight: 600;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 7vh, 5rem) var(--gutter) clamp(3rem, 9vh, 6rem);
+}
+
+.hero h1 {
+  max-width: 13ch;
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6.2vw, 4.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.hero-text > p {
+  max-width: 34rem;
+  margin-top: 1.25rem;
+  color: var(--on-wall-soft);
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hero-actions .button,
+.closing .button {
+  text-decoration: none;
+}
+
+/* The demo: a sheet of paper on which Lotte and Emre write. */
+.demo-book {
+  position: relative;
+  min-height: 25rem;
+  margin: 0;
+  padding: 2.25rem 2rem 1.75rem 4.75rem;
+  border-top: 10px solid #3b62a8;
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 0.35),
+    10px 10px 0 -2px #e9e6d8,
+    10px 10px 0 -1px rgb(0 0 0 / 0.08);
+  transform: rotate(1.5deg);
+}
+
+.demo-ribbon {
+  top: -10px;
+  right: 2.25rem;
+  bottom: auto;
+  width: 16px;
+  height: 64px;
+}
+
+.demo-title {
+  margin: 0 0 1.5rem;
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.demo-piece {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.demo-piece p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.demo-author {
+  position: absolute;
+  top: 0.35rem;
+  right: calc(100% + 0.9rem);
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 1px;
+  background: var(--action);
+  vertical-align: text-bottom;
+}
+
+.demo-turn {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* How it works: three steps in order, so the numbers carry meaning. */
+.steps {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vh, 4.5rem) var(--gutter);
+}
+
+.steps h2,
+.showcase h2,
+.closing h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.steps ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  margin: 2.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  padding-top: 1.25rem;
+  border-top: 3px solid var(--board);
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--board);
+  font-family: var(--serif);
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.steps h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.steps li p {
+  color: var(--on-wall-soft);
+}
+
+.showcase {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vh, 4.5rem) var(--gutter) 0;
+}
+
+.showcase-text {
+  max-width: 38rem;
+  margin-bottom: 1rem;
+}
+
+.showcase-text p {
+  margin-top: 0.75rem;
+  color: var(--on-wall-soft);
+  font-size: 1.05rem;
+}
+
+.shelf-demo {
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 0 var(--gutter);
+}
+
+.closing {
+  padding: clamp(3.5rem, 10vh, 6rem) var(--gutter);
+  text-align: center;
+}
+
+.closing h2 {
+  margin-bottom: 1.5rem;
+}
+
+.landing-foot {
+  padding: 1.5rem var(--gutter) 2.5rem;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  color: var(--on-wall-soft);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 52rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .demo-book {
+    min-height: 0;
+    padding-left: 1.5rem;
+    transform: none;
+  }
+
+  .demo-author {
+    position: static;
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+
+  .steps ol {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* ---------- Notification hint on a book page ---------- */
+
+.notify-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 1.25rem 0 0;
+  padding: 0.9rem 1rem;
+  border-radius: 6px;
+  background: #f1eee2;
+  color: var(--ink);
+}
+
+.notify-hint p {
+  flex: 1 1 14rem;
+  margin: 0;
+}
+
+.notify-hint .bell {
+  flex: 0 0 auto;
+  color: var(--board-edge);
+}
+
+.notify-hint-on {
+  flex-wrap: nowrap;
+}
+
+.notify-hint-on .bell {
+  color: var(--action);
+}
+
+/* ---------- Landing and notification animation ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The hero comes in once: headline, text, buttons, then the sheet of paper. */
+  .hero-text > * {
+    animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  }
+
+  .hero-text > p {
+    animation-delay: 0.1s;
+  }
+
+  .hero-actions {
+    animation-delay: 0.2s;
+  }
+
+  .demo-book {
+    animation: land-paper 0.8s cubic-bezier(0.2, 0.8, 0.3, 1.1) 0.25s both;
+  }
+
+  .demo-ribbon {
+    transform-origin: top;
+    animation: drop-ribbon 0.4s ease-out 0.9s both;
+  }
+
+  .caret {
+    animation: blink 1s steps(1) infinite;
+  }
+
+  .demo-piece {
+    animation: fade-in 0.3s ease-out both;
+  }
+
+  /* The demo shelf waits until it scrolls into view, then the books land one by one. */
+  .shelf-demo > li,
+  .shelf-demo .ribbon {
+    animation: none;
+  }
+
+  .shelf-demo:not(.is-visible) > li {
+    opacity: 0;
+  }
+
+  .shelf-demo.is-visible > li {
+    animation: place-book 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.15) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .shelf-demo.is-visible .ribbon {
+    transform-origin: top;
+    animation: drop-ribbon 0.35s ease-out both;
+    animation-delay: calc(var(--i, 0) * 90ms + 0.45s);
+  }
+
+  /* The bell rings once when notifications are switched on. */
+  .notify-hint-on .bell {
+    transform-origin: 50% 10%;
+    animation: ring 0.9s ease-in-out;
+  }
+
+  .notify-hint {
+    animation: fade-in 0.3s ease-out both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes land-paper {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(-3deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(1.5deg);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes ring {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(16deg);
+  }
+  30% {
+    transform: rotate(-14deg);
+  }
+  45% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-6deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
