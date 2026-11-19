@@ -3,7 +3,7 @@
 services:
   # Spring Boot backend, built from backend/Dockerfile
   - type: web
-    name: write-together-api
+    name: write-together-serkan-api
     runtime: docker
     plan: free
     region: frankfurt
@@ -27,7 +27,7 @@ services:
 
   # React frontend, built once and served as plain files
   - type: web
-    name: write-together
+    name: write-together-serkan
     runtime: static
     buildCommand: cd frontend && npm ci && npm run build
     staticPublishPath: ./frontend/dist

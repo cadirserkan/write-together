@@ -68,8 +68,8 @@ database at [Neon](https://neon.tech). Both let you sign up with your GitHub acc
 2. **Blueprint.** In Render, choose *New → Blueprint* and pick this GitHub repository.
    Render reads `render.yaml` and asks for the empty values:
    - `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`: from Neon
-   - `CORS_ALLOWED_ORIGINS`: the frontend URL, `https://write-together.onrender.com`
-   - `VITE_API_URL`: the backend URL, `https://write-together-api.onrender.com`
+   - `CORS_ALLOWED_ORIGINS`: the frontend URL, `https://write-together-serkan.onrender.com`
+   - `VITE_API_URL`: the backend URL, `https://write-together-serkan-api.onrender.com`
 
    If Render gives a service a different URL (when the name is taken), use that URL instead,
    and redeploy the frontend after changing `VITE_API_URL`, because Vite puts it in the build.
