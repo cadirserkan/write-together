@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, messageOf } from '../api/client';
 import type { BookDetail } from '../api/types';
@@ -16,17 +16,35 @@ export function BookPage() {
   const [book, setBook] = useState<BookDetail | null>(null);
   const [error, setError] = useState('');
 
+  // Ids of the pieces already on screen. Pieces that are not in here yet
+  // (just written by you, or just arrived from the other writer) get a short animation.
+  const shownIds = useRef<Set<number> | null>(null);
+  const [freshIds, setFreshIds] = useState<Set<number>>(new Set());
+
+  const show = useCallback((next: BookDetail) => {
+    const shown = shownIds.current;
+    // On the first load nothing is new: the whole page simply opens.
+    setFreshIds(
+      shown === null
+        ? new Set()
+        : new Set(next.entries.filter((entry) => !shown.has(entry.id)).map((entry) => entry.id)),
+    );
+    shownIds.current = new Set(next.entries.map((entry) => entry.id));
+    setBook(next);
+  }, []);
+
   useEffect(() => {
     // "cancelled" prevents an answer for a previous book from showing up after navigating away.
     let cancelled = false;
     setBook(null);
     setError('');
+    shownIds.current = null;
 
     api
       .getBook(bookId)
       .then((loaded) => {
         if (!cancelled) {
-          setBook(loaded);
+          show(loaded);
         }
       })
       .catch((e: unknown) => {
@@ -38,15 +56,15 @@ export function BookPage() {
     return () => {
       cancelled = true;
     };
-  }, [bookId]);
+  }, [bookId, show]);
 
   const refresh = useCallback(async () => {
     try {
-      setBook(await api.getBook(bookId));
+      show(await api.getBook(bookId));
     } catch {
       // Keep showing what we have; the next refresh will try again.
     }
-  }, [bookId]);
+  }, [bookId, show]);
 
   // While the other writer is busy, look for their piece every few seconds.
   const waitingForPartner = book !== null && book.status === 'IN_PROGRESS' && !book.myTurn;
@@ -97,7 +115,7 @@ export function BookPage() {
         </header>
 
         {book.entries.map((entry) => (
-          <section key={entry.id} className="piece">
+          <section key={entry.id} className={freshIds.has(entry.id) ? 'piece piece-fresh' : 'piece'}>
             <span className="piece-author">{entry.author}</span>
             <p className="piece-text">{entry.text}</p>
           </section>
@@ -111,6 +129,11 @@ export function BookPage() {
 
         {!finished && !book.myTurn && book.partner && (
           <p className="turn-note">
+            <span className="writing-dots" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
             {book.currentTurn} is aan de beurt. Deze pagina ververst vanzelf zodra er een nieuw stuk staat.
           </p>
         )}

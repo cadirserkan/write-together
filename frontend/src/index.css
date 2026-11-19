@@ -335,17 +335,6 @@ textarea {
   line-height: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .cover-link .cover {
-    transition: transform 0.15s ease-out;
-  }
-
-  .cover-link:hover .cover,
-  .cover-link:focus-visible .cover {
-    transform: translateY(-6px);
-  }
-}
-
 /* ---------- The page of a book ---------- */
 
 .back-link {
@@ -773,4 +762,206 @@ textarea {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.75rem;
+}
+
+/* ---------- Animation ----------
+   Everything that moves sits in this block, so people who asked their system
+   for less motion get the same app without it. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The bookshelf: when it opens, the books are put on the shelf one by one,
+     and a moment later the ribbons drop out of the books that wait for you. */
+  .shelf > li {
+    animation: place-book 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.15) both;
+    animation-delay: calc(var(--i, 0) * 55ms);
+  }
+
+  .shelf .ribbon {
+    transform-origin: top;
+    animation: drop-ribbon 0.35s ease-out both;
+    animation-delay: calc(var(--i, 0) * 55ms + 0.4s);
+  }
+
+  /* Hovering over a book pulls it a little out of the row, like taking it off the shelf. */
+  .cover-link .cover {
+    transition: transform 0.2s ease-out;
+  }
+
+  .cover-link:hover .cover,
+  .cover-link:focus-visible .cover {
+    transform: translateY(-8px) rotate(-1.5deg);
+  }
+
+  /* Opening a book: the sheet of paper slides up onto the green wall. */
+  .page {
+    animation: open-page 0.4s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  }
+
+  /* A new piece in the book comes in like wet ink: blurred at first, then sharp,
+     with a soft yellow marker behind it that fades away. */
+  .piece-fresh .piece-text {
+    animation: fresh-ink 0.9s ease-out both;
+  }
+
+  .piece-fresh {
+    border-radius: 4px;
+    animation: fresh-marker 2.4s ease-out both;
+  }
+
+  /* While the other writer is busy, three dots move like someone is typing. */
+  .writing-dots span {
+    animation: typing 1.2s ease-in-out infinite;
+  }
+
+  .writing-dots span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .writing-dots span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /* The "new book" window grows open from the middle. */
+  .dialog[open] {
+    animation: open-dialog 0.25s cubic-bezier(0.2, 0.8, 0.3, 1.1) both;
+  }
+
+  .dialog[open]::backdrop {
+    animation: fade-in 0.25s ease-out both;
+  }
+
+  /* The cover preview in that window follows the colour you pick. */
+  .new-book-preview .cover {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .button:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  /* Login and register: the row of spines leans in from the side once. */
+  .spine {
+    animation: place-book 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.15) both;
+  }
+
+  .spine:nth-child(odd) {
+    animation-delay: 0.08s;
+  }
+
+  .spine:nth-child(3n) {
+    animation-delay: 0.16s;
+  }
+
+  .spine-leaning {
+    animation: lean-book 0.7s cubic-bezier(0.3, 1.4, 0.5, 1) 0.35s both;
+  }
+}
+
+/* The dots also exist without animation, as a still "...". */
+.writing-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.writing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+@keyframes place-book {
+  from {
+    opacity: 0;
+    transform: translateY(-22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes drop-ribbon {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes open-page {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fresh-ink {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@keyframes fresh-marker {
+  0%,
+  40% {
+    background-color: rgb(242 193 78 / 0.28);
+    box-shadow: 0 0 0 8px rgb(242 193 78 / 0.28);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: none;
+    opacity: 0.35;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes open-dialog {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lean-book {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-11deg);
+  }
 }

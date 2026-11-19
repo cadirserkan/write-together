@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, messageOf } from '../api/client';
 import type { BookSummary } from '../api/types';
@@ -37,8 +37,8 @@ export function BookshelfPage() {
       </div>
 
       <ul className="shelf">
-        {sorted.map((book) => (
-          <li key={book.id}>
+        {sorted.map((book, index) => (
+          <li key={book.id} style={shelfPosition(index)}>
             <Link to={`/books/${book.id}`} className="cover-link">
               <BookCover title={book.title} color={book.coverColor} ribbon={book.myTurn}>
                 {book.partner ? `met ${book.partner}` : 'nog alleen'}
@@ -47,7 +47,7 @@ export function BookshelfPage() {
             </Link>
           </li>
         ))}
-        <li>
+        <li style={shelfPosition(sorted.length)}>
           <button type="button" className="cover cover-new" onClick={() => setDialogOpen(true)}>
             <span className="cover-new-plus" aria-hidden="true">
               +
@@ -65,6 +65,12 @@ export function BookshelfPage() {
       )}
     </>
   );
+}
+
+// The CSS uses --i to let the books land on the shelf one after the other.
+// After ten books the delay stops growing, so a full shelf does not keep you waiting.
+function shelfPosition(index: number): CSSProperties {
+  return { '--i': Math.min(index, 10) } as CSSProperties;
 }
 
 function shelfOrder(book: BookSummary): number {
