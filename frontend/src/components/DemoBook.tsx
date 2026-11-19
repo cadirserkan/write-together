@@ -3,9 +3,9 @@ import { useReducedMotion } from '../useReducedMotion';
 
 // A made-up story, written by two made-up people, to show what the app does in a few seconds.
 const STORY = [
-  { author: 'Lotte', text: 'Op zolder vond ik een koffer met mijn naam erop, in een handschrift dat ik niet kende.' },
+  { author: 'Ghizlane', text: 'Op zolder vond ik een koffer met mijn naam erop, in een handschrift dat ik niet kende.' },
   { author: 'Emre', text: 'Er zat één kaart in, van een stad waar ik nooit was geweest. Rond één straat stond een rode cirkel.' },
-  { author: 'Lotte', text: 'Diezelfde avond kocht ik een treinticket.' },
+  { author: 'Ghizlane', text: 'Diezelfde avond kocht ik een treinticket.' },
 ];
 
 const TYPE_SPEED_MS = 34;
@@ -51,7 +51,7 @@ export function DemoBook() {
   const finished = reduced ? STORY.length : done;
 
   return (
-    <figure className="demo-book" aria-label="Voorbeeld: Lotte en Emre schrijven om de beurt een verhaal.">
+    <figure className="demo-book" aria-label="Voorbeeld: Ghizlane en Emre schrijven om de beurt een verhaal.">
       <span className="ribbon demo-ribbon" aria-hidden="true" />
       <p className="demo-title">De koffer op zolder</p>
 
