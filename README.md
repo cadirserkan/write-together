@@ -75,6 +75,9 @@ database at [Neon](https://neon.tech). Both let you sign up with your GitHub acc
    and redeploy the frontend after changing `VITE_API_URL`, because Vite puts it in the build.
 3. Open the frontend URL.
 
+For push notifications, also set `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` and
+`VAPID_SUBJECT` on the backend service (see Notifications above).
+
 On the free plan the backend falls asleep after 15 minutes without visitors. The first
 request after that takes about a minute while it wakes up.
 

@@ -4,6 +4,7 @@ import { api, messageOf } from '../api/client';
 import type { BookDetail } from '../api/types';
 import { useAuth } from '../auth/AuthContext';
 import { InviteBox } from '../components/InviteBox';
+import { NotificationHint } from '../components/NotificationHint';
 import { WriteForm } from '../components/WriteForm';
 import { usePageTitle } from '../usePageTitle';
 
@@ -139,6 +140,8 @@ export function BookPage() {
             {book.currentTurn} is aan de beurt. Deze pagina ververst vanzelf zodra er een nieuw stuk staat.
           </p>
         )}
+
+        {!finished && !book.myTurn && book.partner && <NotificationHint />}
 
         {!finished && book.owner && !book.partner && <InviteBox bookId={book.id} bookTitle={book.title} />}
 

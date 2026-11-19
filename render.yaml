@@ -21,6 +21,13 @@ services:
         sync: false
       - key: JWT_SECRET
         generateValue: true
+      # Push notifications (see README). Without them the app works, but sends no notifications.
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        sync: false
       # The free plan has 512 MB of memory; let Java use most of it, but not more.
       - key: JAVA_TOOL_OPTIONS
         value: -XX:MaxRAMPercentage=75

@@ -2,9 +2,26 @@ import { api } from './api/client';
 
 export type PushState =
   | 'unavailable' // this browser or this server cannot do push
+  | 'needs-install' // iPhone/iPad: push only works once the app is on the home screen
   | 'blocked' // the user said no in the browser settings
   | 'off'
   | 'on';
+
+// Both the button in the top bar and the hint on the book page listen for this,
+// so turning notifications on in one place updates the other.
+export const PUSH_CHANGED = 'wt-push-changed';
+
+function announceChange(): void {
+  window.dispatchEvent(new Event(PUSH_CHANGED));
+}
+
+function isAppleMobile(): boolean {
+  return /iPhone|iPad|iPod/.test(navigator.userAgent);
+}
+
+function runsFromHomeScreen(): boolean {
+  return window.matchMedia('(display-mode: standalone)').matches;
+}
 
 function browserSupportsPush(): boolean {
   return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
@@ -12,7 +29,8 @@ function browserSupportsPush(): boolean {
 
 export async function getPushState(): Promise<PushState> {
   if (!browserSupportsPush()) {
-    return 'unavailable';
+    // Safari on iPhone only offers push to web apps that were added to the home screen.
+    return isAppleMobile() && !runsFromHomeScreen() ? 'needs-install' : 'unavailable';
   }
   const { publicKey } = await api.getPushKey();
   if (!publicKey) {
@@ -45,6 +63,7 @@ export async function enablePush(): Promise<PushState> {
     throw new Error('De browser gaf geen geldig abonnement terug.');
   }
   await api.subscribePush(endpoint, keys.p256dh, keys.auth);
+  announceChange();
   return 'on';
 }
 
@@ -59,6 +78,7 @@ export async function disablePush(): Promise<void> {
   }
   await api.unsubscribePush(subscription.endpoint);
   await subscription.unsubscribe();
+  announceChange();
 }
 
 // The VAPID public key arrives as base64url text, the browser wants raw bytes.
