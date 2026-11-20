@@ -5,6 +5,7 @@ import type { BookSummary } from '../api/types';
 import { BookCover } from '../components/BookCover';
 import { NewBookDialog } from '../components/NewBookDialog';
 import { usePageTitle } from '../usePageTitle';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 export function BookshelfPage() {
   usePageTitle('Jouw boekenkast');
@@ -24,7 +25,7 @@ export function BookshelfPage() {
     return <p className="status-text">{error}</p>;
   }
   if (books === null) {
-    return <p className="status-text">Even laden...</p>;
+    return <LoadingScreen />;
   }
 
   // Books that wait for you come first, finished books go to the end of the shelf.

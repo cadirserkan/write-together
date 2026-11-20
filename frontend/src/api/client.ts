@@ -86,6 +86,14 @@ async function readErrorMessage(response: Response): Promise<string> {
     : 'Er ging iets mis. Probeer het opnieuw.';
 }
 
+// Sends a harmless request so a sleeping server starts waking up
+// while the visitor is still reading or typing.
+export function wakeServer(): void {
+  fetch(API_URL + '/api/push/public-key').catch(() => {
+    // Only a head start; nothing depends on the answer.
+  });
+}
+
 export const api = {
   register: (username: string, email: string, password: string) =>
     request<AuthResponse>('POST', '/api/auth/register', { username, email, password }),

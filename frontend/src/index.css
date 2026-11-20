@@ -1358,3 +1358,105 @@ textarea {
     transform: rotate(3deg);
   }
 }
+
+/* ---------- Waiting for the server ---------- */
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 27rem;
+  margin: 0 auto;
+  padding: clamp(4rem, 18vh, 9rem) 1rem 3rem;
+  color: var(--on-wall-soft);
+  text-align: center;
+}
+
+.loading-title {
+  color: var(--on-wall);
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.loading-screen .button {
+  margin-top: 0.5rem;
+}
+
+/* A small open book whose pages keep turning. */
+.flip-book {
+  position: relative;
+  width: 76px;
+  height: 50px;
+  margin-bottom: 1rem;
+  border-bottom: 5px solid var(--board);
+  border-radius: 0 0 4px 4px;
+  perspective: 320px;
+}
+
+.flip-book::before,
+.flip-book::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--paper);
+}
+
+.flip-book::before {
+  left: 0;
+  border-radius: 6px 0 0 0;
+  box-shadow: inset -6px 0 8px -6px rgb(0 0 0 / 0.35);
+}
+
+.flip-book::after {
+  right: 0;
+  border-radius: 0 6px 0 0;
+  box-shadow: inset 6px 0 8px -6px rgb(0 0 0 / 0.35);
+}
+
+.flip-book > span {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  border-radius: 0 6px 0 0;
+  background: #eeebdd;
+  transform-origin: left center;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flip-book > span {
+    animation: turn-page 1.8s ease-in-out infinite;
+  }
+
+  .flip-book > span:nth-child(2) {
+    animation-delay: 0.6s;
+  }
+
+  .flip-book > span:nth-child(3) {
+    animation-delay: 1.2s;
+  }
+}
+
+@keyframes turn-page {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  45% {
+    opacity: 1;
+    transform: rotateY(-180deg);
+  }
+  46%,
+  100% {
+    opacity: 0;
+    transform: rotateY(-180deg);
+  }
+}

@@ -4,6 +4,7 @@ import { api, messageOf } from '../api/client';
 import type { Invitation } from '../api/types';
 import { useAuth } from '../auth/AuthContext';
 import { usePageTitle } from '../usePageTitle';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 export function InvitePage() {
   usePageTitle('Uitnodiging');
@@ -46,6 +47,10 @@ export function InvitePage() {
     } finally {
       setBusy(false);
     }
+  }
+
+  if (invitation === null && !error) {
+    return <LoadingScreen />;
   }
 
   if (invitation === null) {

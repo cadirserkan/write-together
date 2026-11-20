@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
-import { messageOf } from '../api/client';
+import { messageOf, wakeServer } from '../api/client';
 import { useAuth } from '../auth/AuthContext';
 import { safeNextPath } from '../auth/next';
 import { Logo } from '../components/Logo';
@@ -9,6 +9,10 @@ import { usePageTitle } from '../usePageTitle';
 
 export function RegisterPage() {
   usePageTitle('Account aanmaken');
+
+  useEffect(() => {
+    wakeServer();
+  }, []);
   const { user, register } = useAuth();
   const [searchParams] = useSearchParams();
   const next = safeNextPath(searchParams.get('next'));

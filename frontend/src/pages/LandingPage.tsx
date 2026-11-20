@@ -1,12 +1,18 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { DemoBook } from '../components/DemoBook';
 import { Logo } from '../components/Logo';
 import { ShelfDemo } from '../components/ShelfDemo';
 import { usePageTitle } from '../usePageTitle';
+import { wakeServer } from '../api/client';
 
 // The first thing a visitor without an account sees.
 export function LandingPage() {
   usePageTitle('Schrijf samen een boek, om de beurt');
+
+  useEffect(() => {
+    wakeServer();
+  }, []);
 
   return (
     <div className="landing">

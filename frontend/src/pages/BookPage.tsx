@@ -7,6 +7,7 @@ import { InviteBox } from '../components/InviteBox';
 import { NotificationHint } from '../components/NotificationHint';
 import { WriteForm } from '../components/WriteForm';
 import { usePageTitle } from '../usePageTitle';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 const REFRESH_INTERVAL_MS = 15_000;
 
@@ -90,6 +91,10 @@ export function BookPage() {
     } catch (e) {
       setError(messageOf(e));
     }
+  }
+
+  if (book === null && !error) {
+    return <LoadingScreen />;
   }
 
   if (book === null) {
